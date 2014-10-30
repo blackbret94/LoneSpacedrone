@@ -1,0 +1,65 @@
+/* Astroid
+ * by Bret Black
+ * 
+ * These float around the map and offer resources for the player
+ */
+
+import acm.program.*;
+import acm.graphics.*;
+import acm.util.*;
+import java.awt.*;
+import java.util.*;
+
+public class Explosion extends GCompound {
+  // instance variables
+  private int clockCount = 30;
+  private double scale;
+  private GOval[] ring = new GOval[3];
+  private LoneSpacedrone game;
+  
+  // constructor
+  public Explosion(double scale, LoneSpacedrone game){
+    this.scale = (scale/64);
+    this.game = game;
+    
+    for (int i = 0; i < ring.length; i++) {
+      ring[i] = new GOval(1,1);
+      add(ring[i]);
+    }
+    
+    ring[0].setColor(Color.WHITE);
+    ring[1].setColor(Color.ORANGE);
+    ring[2].setColor(Color.YELLOW);
+  }
+  
+  // oneTimeStep
+  public void oneTimeStep(){
+    // grow rings
+    ring[0].scale(.5*ring[0].getHeight()+ scale);
+    ring[1].scale(.5*ring[1].getHeight()+ 1.25*scale);
+    ring[2].scale(.5*ring[2].getHeight()+ 1.33*scale);
+    
+    // run clock
+    clock();
+  }
+  
+  // clock
+  public void clock(){
+    if (clockCount > 0) {
+      clockCount--;
+    } else {
+      destroy();
+    }
+  }
+  
+  // death
+  public void destroy(){
+    for(int i = 0; i < game.explosion.size(); i++){
+          if (game.explosion.get(i).equals(this)){
+            game.explosion.remove(i);
+            setLocation(-50,game.rand.nextInt((int).75*game.APPLICATION_HEIGHT)+game.APPLICATION_HEIGHT/8);
+            removeAll();
+          }
+        }    
+  }
+}

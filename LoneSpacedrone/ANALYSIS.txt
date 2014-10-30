@@ -1,0 +1,13 @@
+Origianlly, I inteded to write a simplified version of a project I worked over the summer.  That project had run away from me and I added
+so many features it stopped being fun to play.  I intended to find out what the element of fun was using this project.  In the process,
+it evolved into a new game entirely, where the player plays as a drone defending a space station from astroids and aliens.
+
+I was able to achieve most of what I wanted.  I would have liked to have additional attacks and enemies, but time restrictions prevented me
+from doing so.  I would have also liked to have events other than alien invasion - perhaps the occasional meteor shower or escort mission would
+spice up the game a bit.
+
+I intended to add sound, but issues with the Java installed on my machine prevented me from doing so.
+
+In addition to being a wonderful chance to develop a larger and completely self-guided java game, this project gave me an opportunity to learn
+vector graphics.  In the past, I've always used pixel art for my games but I was unhappy with how my drawings looked under this theme.  About
+halfway through the project I abandoned pixel art and began using Inkscape for my graphics instead.

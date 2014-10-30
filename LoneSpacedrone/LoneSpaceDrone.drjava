@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20130901-r5756">
+  <project autorefresh="false" main="" manifest="" root="" work="">
+    <createjar file="" flags="5"/>
+    <source>
+      <file active="true" name="LoneSpacedrone.java" package="" timestamp="20-Nov-2013 22:41:01">
+        <select from="7842" to="7842"/>
+        <scroll column="4529" row="0"/>
+      </file>
+      <file name="Spaceship.java" package="" timestamp="20-Nov-2013 12:17:19">
+        <select from="7842" to="7842"/>
+        <scroll column="4529" row="0"/>
+      </file>
+      <file name="Compartment.java" package="" timestamp="20-Nov-2013 11:36:10">
+        <select from="7842" to="7842"/>
+        <scroll column="4529" row="0"/>
+      </file>
+      <file name="Astroid.java" package="" timestamp="20-Nov-2013 12:17:37">
+        <select from="7842" to="7842"/>
+        <scroll column="4529" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>

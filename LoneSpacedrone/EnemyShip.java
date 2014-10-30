@@ -1,0 +1,169 @@
+/* Enemy Ship
+ * by Bret Black
+ * 
+ * These float around the map and try to destroy the space station
+ */
+
+import acm.program.*;
+import acm.graphics.*;
+import acm.util.*;
+import java.awt.*;
+import java.util.*;
+import java.applet.*;
+
+public class EnemyShip extends GCompound{
+  // instance variables
+  public double hSpeed, vSpeed;
+  private GImage image;
+  public int health, maxHealth;
+  private LoneSpacedrone game;
+  private Spaceship spaceship;
+  public int size;
+  public boolean hitByPlayer = false;
+  
+  // constructor
+  public EnemyShip(int size, LoneSpacedrone game, Spaceship spaceship){
+    // save instance variables
+    this.game = game;
+    this.spaceship = spaceship;
+    this.size = size;
+    
+    // draw image
+    image = new GImage("enemyShip.png");
+    image.scale(size);
+    add(image);
+    
+    // set speed
+    hSpeed = game.rand.nextDouble(1,4);
+    vSpeed = game.rand.nextDouble(.25,1);
+    
+    // set health
+    maxHealth = size*15;
+    health = maxHealth;
+    
+    game.sendInterfaceFront();
+  }
+  // one time step
+  public void oneTimeStep(){
+    move(hSpeed,vSpeed);
+    checkOnMap();
+    checkCollisionLazer();
+    checkCollisionStation();
+    checkHealth();
+    
+    // randomly change v direction
+    if (game.rand.nextInt(200) == 1) vSpeed = -vSpeed;
+    
+    // randomly shoot
+    if (game.rand.nextInt(100) == 1) shoot();
+  }
+  
+  // check if off map
+  public void checkOnMap(){
+    if (getX() > game.APPLICATION_WIDTH + getWidth() || getY() > game.APPLICATION_HEIGHT + getHeight()){
+      setLocation(-50,game.rand.nextInt((int).75*game.APPLICATION_HEIGHT)+game.APPLICATION_HEIGHT/8);
+    }
+  }
+  
+  // checks for collision with the space station
+  public void checkCollisionStation(){
+    for (int i = 0; i < game.compartment.length; i++) {
+      if (getBounds().intersects(game.compartment[i].getBounds())){
+        game.compartment[i].health -= 20*size;
+        takeDamage(15);
+      }
+    }
+  }
+  
+  // take damage
+  public void takeDamage(int i){
+    health -= i;
+  }
+  
+  // check health
+  public void checkHealth(){
+    if (health <= 0) {
+      // destroy this enemy and remove from the arraylist
+      for(int i = 0; i < game.enemy.size(); i++){
+        if (game.enemy.get(i).equals(this)){
+          // create explosion
+          game.addExplosion(getHeight(),getX()+getWidth()/2,getY()+getHeight()/2);
+          
+          // award experience and remove
+          if (hitByPlayer) {
+            game.experience += 10;
+            // add resources
+            game.resources += 10*(size^2);
+            
+            
+          }
+          game.enemy.remove(i);
+          setLocation(-50,game.rand.nextInt((int).75*game.APPLICATION_HEIGHT)+game.APPLICATION_HEIGHT/8);
+          removeAll();
+        }
+      }    
+    }
+  }
+  
+  // check for collision with lazers
+  public void checkCollisionLazer(){
+    // left 
+    // check
+    if (game.spaceship.leftLine.isVisible() == true) {
+      // find rectangle
+      GRectangle lineBound = spaceship.leftLine.getBounds();
+      lineBound.translate(spaceship.getX(),spaceship.getY());
+      
+      if (getBounds().intersects(lineBound)){
+        takeDamage(1);
+        hitByPlayer = true;
+      }
+    }
+    
+    // right
+    if (game.spaceship.rightLine.isVisible() == true) {
+      // find rectangle
+      GRectangle lineBound = spaceship.rightLine.getBounds();
+      lineBound.translate(spaceship.getX(),spaceship.getY());
+      
+      if (getBounds().intersects(lineBound)){
+        takeDamage(1);
+        hitByPlayer = true;
+      }
+    }
+    
+    // up
+    if (game.spaceship.upLine.isVisible() == true) {
+      // find rectangle
+      GRectangle lineBound = spaceship.upLine.getBounds();
+      lineBound.translate(spaceship.getX(),spaceship.getY());
+      
+      if (getBounds().intersects(lineBound)){
+        takeDamage(1);
+        hitByPlayer = true;
+      }
+    }
+    
+    // down
+    if (game.spaceship.downLine.isVisible() == true) {
+      // find rectangle
+      GRectangle lineBound = spaceship.downLine.getBounds();
+      lineBound.translate(spaceship.getX(),spaceship.getY());
+      
+      if (getBounds().intersects(lineBound)){
+        takeDamage(1);
+        hitByPlayer = true;
+      }
+    }
+  }
+  
+  // shoot bullets
+  public void shoot(){
+    Bullet newBullet = new Bullet(8,game,spaceship);
+    game.bullet.add(newBullet);
+    game.add(newBullet,this.getX(),this.getY()+getWidth()/4+getHeight()/2);
+    
+    // play sound
+    //fireShot.play();
+  }
+}
